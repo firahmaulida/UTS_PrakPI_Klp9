@@ -17,7 +17,7 @@ from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
 
 # ===============================
-#  SASTRAWI STEMMER
+# 🌿 SASTRAWI STEMMER
 # ===============================
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
@@ -26,7 +26,7 @@ factory = StemmerFactory()
 sastrawi_stemmer = factory.create_stemmer()
 
 # ===============================
-#  ANSI COLOR CODES
+# 🎨 ANSI COLOR CODES
 # ===============================
 class Colors:
     HEADER = '\033[95m'
@@ -62,7 +62,7 @@ def print_info(text):
     print(f"{Colors.CYAN}ℹ️  {text}{Colors.END}")
 
 # ===============================
-#  PROGRESS BAR
+# 🔧 PROGRESS BAR
 # ===============================
 def progress_bar(current, total, bar_length=40, prefix="Progress"):
     """Simple progress bar"""
@@ -74,7 +74,7 @@ def progress_bar(current, total, bar_length=40, prefix="Progress"):
         print()
 
 # ===============================
-#  STOPWORDS EN + ID
+# 📝 STOPWORDS EN + ID
 # ===============================
 STOPWORDS_EN = {
     "the","a","an","and","or","in","on","of","for","to","is","are","was","were",
@@ -93,12 +93,12 @@ STOPWORDS_ID = {
 STOPWORDS = STOPWORDS_EN | STOPWORDS_ID
 
 # ===============================
-#  REGEX PATTERN
+# 🔤 REGEX PATTERN
 # ===============================
 WORD_RE = re.compile(r"[a-zA-Z]+")
 
 # ===============================
-#  SASTRAWI STEMMING (PENGGANTI SIMPLE_STEM)
+# 🌿 SASTRAWI STEMMING (PENGGANTI SIMPLE_STEM)
 # ===============================
 def simple_stem(word: str) -> str:
     """Stemming menggunakan Sastrawi untuk Bahasa Indonesia"""
@@ -127,7 +127,7 @@ def normalize(text: str) -> str:
     return text.strip()
 
 # ===============================
-#  PREPROCESS TOKEN
+# 🔄 PREPROCESS TOKEN
 # ===============================
 def preprocess(word: str) -> str:
     """Preprocessing token: lowercase, stopword removal, stemming"""
@@ -140,7 +140,7 @@ def preprocess(word: str) -> str:
     return w
 
 # ===============================
-#  LOAD SEMUA FILE TEKS
+# 📂 LOAD SEMUA FILE TEKS
 # ===============================
 def load_all_texts_with_paths(dataset_dir="dataset") -> Tuple[List[str], List[str], Dict[str, int]]:
     """
@@ -179,7 +179,7 @@ def load_all_texts_with_paths(dataset_dir="dataset") -> Tuple[List[str], List[st
     return all_docs, all_paths, dict(dataset_stats)
 
 # ===============================
-#  BANGUN INVERTED INDEX
+# 🗂️ BANGUN INVERTED INDEX
 # ===============================
 def build_inverted_index_hash(docs):
     """Membangun inverted index dengan hash table"""
@@ -217,7 +217,7 @@ def write_outputs(inverted, vocab_file="vocabulary_hash.txt", postings_file="pos
     print_success(f"Vocabulary: {len(terms)} unique terms")
 
 # ===============================
-#  WHOOSH INDEX
+# 🔍 WHOOSH INDEX
 # ===============================
 WHOOSH_DIR = "whoosh_index"
 
@@ -273,7 +273,7 @@ def whoosh_search(ix, raw_query: str, top_k=200):
     return cand
 
 # ===============================
-#  TF-IDF BUILD
+# 📊 TF-IDF BUILD
 # ===============================
 def build_tfidf_from_texts(raw_texts: List[str]):
     """Membangun TF-IDF matrix menggunakan CountVectorizer dan TfidfTransformer"""
@@ -292,7 +292,7 @@ def build_tfidf_from_texts(raw_texts: List[str]):
     return vectorizer, tfidf_transformer, X_tfidf, norm_texts
 
 # ===============================
-#  RERANK WITH COSINE SIMILARITY
+# 🎯 RERANK WITH COSINE SIMILARITY
 # ===============================
 def rerank_query_with_tfidf(query: str, vectorizer, tfidf_transformer, X_tfidf, 
                              candidate_indices: List[int], top_k=5):
@@ -320,7 +320,7 @@ def rerank_query_with_tfidf(query: str, vectorizer, tfidf_transformer, X_tfidf,
     return paired[:top_k]
 
 # ===============================
-#  GET DOCUMENT SNIPPET
+# 📄 GET DOCUMENT SNIPPET
 # ===============================
 def get_snippet(text: str, query: str, max_length=200) -> str:
     """Mengambil snippet dokumen yang relevan dengan query"""
@@ -353,7 +353,7 @@ def get_snippet(text: str, query: str, max_length=200) -> str:
     return snippet
 
 # ===============================
-#  EXPORT HASIL PENCARIAN
+# 💾 EXPORT HASIL PENCARIAN
 # ===============================
 def export_results(query: str, results: List[Tuple[int, float]], paths: List[str], 
                    raw_texts: List[str], filename="search_results.txt"):
@@ -379,7 +379,7 @@ def export_results(query: str, results: List[Tuple[int, float]], paths: List[str
         print_error(f"Gagal export hasil: {e}")
 
 # ===============================
-#  DISPLAY STATISTICS
+# 📊 DISPLAY STATISTICS
 # ===============================
 def display_statistics(dataset_stats: Dict[str, int], inverted, X_tfidf):
     """Menampilkan statistik dataset"""
@@ -399,14 +399,13 @@ def display_statistics(dataset_stats: Dict[str, int], inverted, X_tfidf):
     print()
 
 # ===============================
-#  CLI MAIN MENU
+# 🖥️ CLI MAIN MENU
 # ===============================
 def print_main_menu():
     """Print menu utama dengan style"""
     print(f"\n{Colors.BOLD}{Colors.HEADER}")
     print("╔════════════════════════════════════════════════╗")
     print("║   INFORMATION RETRIEVAL SYSTEM - Enhanced      ║")
-    print("║           with Sastrawi Stemmer                ║")
     print("╚════════════════════════════════════════════════╝")
     print(f"{Colors.END}")
     print(f"{Colors.CYAN}[1]{Colors.END} Load & Index Dataset")
